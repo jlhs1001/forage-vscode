@@ -56,6 +56,17 @@ body {
     color: rgb(212, 54, 128);
 }
 
+.lineNumber {
+    width: 70px;
+    text-align: right;
+    float: left;
+    margin-right: 8px;
+}
+
+.line {
+    float: left;
+}
+
 .queryButton {
     float: right;
     padding: 3px;
