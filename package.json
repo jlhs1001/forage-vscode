@@ -3,7 +3,8 @@
 	"displayName": "forage",
 	"description": "forage search tool. let no information be hidden.",
 	"publisher": "Liam Seewald",
-	"repository": {"url": ""},
+	"repository": {"url": "https://github.com/jlhs1001/forage.git"},
+	"license": "LICENSE",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.64.0"
