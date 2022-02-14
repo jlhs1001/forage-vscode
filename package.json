@@ -2,7 +2,7 @@
   "name": "forage",
 	"displayName": "forage",
 	"description": "forage search tool. let no information be hidden.",
-	"publisher": "Liam Seewald",
+	"publisher": "LiamSeewald",
 	"repository": {"url": "https://github.com/jlhs1001/forage.git"},
 	"license": "LICENSE",
 	"version": "0.0.1",

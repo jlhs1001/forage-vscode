@@ -8,6 +8,14 @@ let queryStarted = false;
 const queryTemplate = document.getElementsByClassName("queryTemplate")[0];
 let source = String.raw``;
 
+String.prototype.insert = function(index, string) {
+    if (index > 0) {
+        return this.substring(0, index) + string + this.substring(index);
+    }
+
+    return string + this;
+};
+
 const escapeHtml = (unsafe) => {
     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 };
@@ -118,22 +126,78 @@ const querySource = () => {
     
     let currentLine = "";
 
+    // source.split('\n').forEach((line, index) => {
+    //     for (let match of [...line.matchAll(new RegExp(builtQuery, 'g'))]) {
+    //         lineHasMatch = true;
+    //         console.log("test");
+    //         currentLine = escapeHtml(line).replaceAll(match[0], `<span class="highlight">${escapeHtml(match[0])}</span>`);
+    //     }
+
+    //     // line = '<pre>' + line + '</pre>';
+
+    //     if (!lineHasMatch) {
+    //         result.push(`<span>${index}</span>: ${escapeHtml(line)}`);
+    //     } else {
+    //         lineHasMatch = false;
+    //         result.push(`<span>${index}</span>: ${currentLine}`);
+    //     }
+    // });
+    let re = new RegExp(builtQuery, 'g');
     source.split('\n').forEach((line, index) => {
-        for (let match of [...line.matchAll(new RegExp(builtQuery, 'g'))]) {
+        let fmtdLine = escapeHtml(line);
+        let lineHasMatch = false;
+        let updatedIndex = 0;
+        for (let match of [...line.matchAll(re)]) {
+            let htmlEncodedLenSum = 0;
+            for (let char of line.substring(0, match.index)) {
+                switch (char) {
+                    case '&':
+                        htmlEncodedLenSum += 4;
+                        break;
+                    case '<':
+                        htmlEncodedLenSum += 3;
+                        break;
+                    case '>':
+                        htmlEncodedLenSum += 3;
+                        break;
+                    case '"':
+                        htmlEncodedLenSum += 5;
+                        break;
+                    case "'":
+                        htmlEncodedLenSum += 5;
+                        break;
+                }
+            }
+            fmtdLine = fmtdLine.insert(match.index + (updatedIndex + htmlEncodedLenSum), '<span class="highlight">');
+            updatedIndex += 24;
+
+            for (let char of match[0]) {
+                switch (char) {
+                    case '&':
+                        htmlEncodedLenSum += 4;
+                        break;
+                    case '<':
+                        htmlEncodedLenSum += 3;
+                        break;
+                    case '>':
+                        htmlEncodedLenSum += 3;
+                        break;
+                    case '"':
+                        htmlEncodedLenSum += 5;
+                        break;
+                    case "'":
+                        htmlEncodedLenSum += 5;
+                        break;
+                }
+            }
+
+            fmtdLine = fmtdLine.insert((match.index + (updatedIndex + htmlEncodedLenSum)) + match[0].length, '</span>');
+            updatedIndex += 7;
             lineHasMatch = true;
-            console.log("test");
-            currentLine = escapeHtml(line).replaceAll(match[0], `<span class="highlight">${escapeHtml(match[0])}</span>`);
         }
-
-        // line = '<pre>' + line + '</pre>';
-
-        if (!lineHasMatch) {
-            result.push(`<span>${index}</span>: ${escapeHtml(line)}`);
-        } else {
-            lineHasMatch = false;
-            result.push(`<span>${index}</span>: ${currentLine}`);
+        if (lineHasMatch) {
+            result.push(fmtdLine);
         }
     });
-    console.log(result);
     search.resultPanel.innerHTML = result.join("\n");
 };
