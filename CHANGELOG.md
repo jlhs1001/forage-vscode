@@ -1,8 +1,12 @@
 # Change Log
 
+# [0.0.4] - 2-14-2022
+### Added
+- proper changelog
+
 # [0.0.3] - 2-14-2022
 ### Fixed
-- removed slow javascript of extreme verbosity
+- slow and unecessary code
 
 ## [0.0.2] - 2-14-2022
 ### Fixed
