@@ -1,9 +1,13 @@
 # Change Log
 
-All notable changes to the "forage" extension will be documented in this file.
+# [0.0.3] - 2-14-2022
+### Fixed
+- removed slow javascript of extreme verbosity
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [0.0.2] - 2-14-2022
+### Fixed
+- text rendering highlight issue.
+- issue where you could not use &, <, >, ", or '.
 
-## [Unreleased]
-
-- Initial release
+## [0.0.1] - 2-14-2022
+- Initial release.
