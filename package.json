@@ -2,6 +2,8 @@
   "name": "forage",
 	"displayName": "forage",
 	"description": "forage search tool. let no information be hidden.",
+	"publisher": "Liam Seewald",
+	"repository": {"url": ""},
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.64.0"
