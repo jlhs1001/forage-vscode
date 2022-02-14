@@ -160,7 +160,7 @@ const querySource = () => {
             lineHasMatch = true;
         }
         if (lineHasMatch) {
-            result.push(fmtdLine);
+            result.push(`<div class="lineNumber">${index}:</div><div class="line">${fmtdLine}</div>`);
         }
     });
     search.resultPanel.innerHTML = result.join("\n");

@@ -1,10 +1,12 @@
 # Change Log
 
-# [0.0.4] - 2-14-2022
+## [0.0.4] - 2-14-2022
 ### Added
-- proper changelog
+- proper CHANGELOG
+- keyboard shortcut to README
+- line numbers!
 
-# [0.0.3] - 2-14-2022
+## [0.0.3] - 2-14-2022
 ### Fixed
 - slow and unecessary code
 
