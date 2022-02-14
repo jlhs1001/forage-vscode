@@ -4,6 +4,7 @@
 ### Added
 - proper CHANGELOG
 - keyboard shortcut to README
+- line numbers!
 
 ## [0.0.3] - 2-14-2022
 ### Fixed

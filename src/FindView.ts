@@ -6,6 +6,7 @@ export class FindPanel {
      */
     public static currentPanel: FindPanel | undefined;
     public static viewType = 'find';
+    private static extensionIsActive: boolean = false;
 
     private readonly _panel: vscode.WebviewPanel;
     private readonly _extensionUri: vscode.Uri;
@@ -43,7 +44,9 @@ export class FindPanel {
         // Set webview's initial html
         this._update();
 
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+        this._panel.onDidDispose(() => {
+            return this.dispose(), null, this._disposables;
+        });
 
         this._panel.onDidChangeViewState(e => {
             if (this._panel.visible) {

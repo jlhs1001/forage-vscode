@@ -20,7 +20,7 @@
 		"commands": [
 			{
 				"command": "forage.find",
-				"title": "Hello World"
+				"title": "Find"
 			}
 		],
 		"keybindings": [
