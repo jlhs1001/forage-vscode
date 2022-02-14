@@ -126,22 +126,13 @@ const querySource = () => {
     
     let currentLine = "";
 
-    // source.split('\n').forEach((line, index) => {
-    //     for (let match of [...line.matchAll(new RegExp(builtQuery, 'g'))]) {
-    //         lineHasMatch = true;
-    //         console.log("test");
-    //         currentLine = escapeHtml(line).replaceAll(match[0], `<span class="highlight">${escapeHtml(match[0])}</span>`);
-    //     }
-
-    //     // line = '<pre>' + line + '</pre>';
-
-    //     if (!lineHasMatch) {
-    //         result.push(`<span>${index}</span>: ${escapeHtml(line)}`);
-    //     } else {
-    //         lineHasMatch = false;
-    //         result.push(`<span>${index}</span>: ${currentLine}`);
-    //     }
-    // });
+    let htmlEncodedChars = {
+        '&': 4,
+        '<': 3,
+        '>': 3,
+        '"': 5,
+        "'": 5,
+    };
     let re = new RegExp(builtQuery, 'g');
     source.split('\n').forEach((line, index) => {
         let fmtdLine = escapeHtml(line);
@@ -150,44 +141,17 @@ const querySource = () => {
         for (let match of [...line.matchAll(re)]) {
             let htmlEncodedLenSum = 0;
             for (let char of line.substring(0, match.index)) {
-                switch (char) {
-                    case '&':
-                        htmlEncodedLenSum += 4;
-                        break;
-                    case '<':
-                        htmlEncodedLenSum += 3;
-                        break;
-                    case '>':
-                        htmlEncodedLenSum += 3;
-                        break;
-                    case '"':
-                        htmlEncodedLenSum += 5;
-                        break;
-                    case "'":
-                        htmlEncodedLenSum += 5;
-                        break;
+                console.log(htmlEncodedChars[char]);
+                if (htmlEncodedChars[char]) {
+                    htmlEncodedLenSum += htmlEncodedChars[char];
                 }
             }
             fmtdLine = fmtdLine.insert(match.index + (updatedIndex + htmlEncodedLenSum), '<span class="highlight">');
             updatedIndex += 24;
 
             for (let char of match[0]) {
-                switch (char) {
-                    case '&':
-                        htmlEncodedLenSum += 4;
-                        break;
-                    case '<':
-                        htmlEncodedLenSum += 3;
-                        break;
-                    case '>':
-                        htmlEncodedLenSum += 3;
-                        break;
-                    case '"':
-                        htmlEncodedLenSum += 5;
-                        break;
-                    case "'":
-                        htmlEncodedLenSum += 5;
-                        break;
+                if (htmlEncodedChars[char]) {
+                    htmlEncodedLenSum += htmlEncodedChars[char];
                 }
             }
 
