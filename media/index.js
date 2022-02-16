@@ -114,6 +114,8 @@ const querySource = () => {
         return;
     }
 
+    // kind of hacky, but necessary for the white-space patch.
+
     let builtQuery = search.results[0].search;
     for (let i = 1; i < search.results.length; i++) {
         builtQuery += search.results[i].logic.and
@@ -134,7 +136,8 @@ const querySource = () => {
         "'": 5,
     };
     let re = new RegExp(builtQuery, 'g');
-    source.split('\n').forEach((line, index) => {
+    let lines = source.split('\n');
+    lines.forEach((line, index) => {
         let fmtdLine = escapeHtml(line);
         let lineHasMatch = false;
         let updatedIndex = 0;
@@ -160,7 +163,15 @@ const querySource = () => {
             lineHasMatch = true;
         }
         if (lineHasMatch) {
-            result.push(`<div class="lineNumber">${index}:</div><div class="line">${fmtdLine}</div>`);
+            result.push(`<div class="matchBox">`);
+            for (let i = index - 2; i < index + 2; i++) {
+                if (lines[i]) {
+                    i === index 
+                        ? result.push(`<div class="lineNumber">${index + 1}:</div><div class="line">${fmtdLine}</div>`)
+                        : result.push(`<div class="lineNumber">${i + 1}:</div><div class="line">${lines[i]}</div>`);
+                }
+            }
+            result.push("</div>");
         }
     });
     search.resultPanel.innerHTML = result.join("\n");

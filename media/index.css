@@ -13,8 +13,12 @@ body {
     width: 48%;
     height: 50%;
     font-size: x-large;
-    float: left;
     margin-top: 10px;
+}
+
+#resultContainer {
+    float: left;
+    overflow-x: auto;
 }
 
 #queryResult {
@@ -24,8 +28,8 @@ body {
     width: 95%;
     height: 50%;
     font-size: x-large;
-    float: left;
-    overflow-x: scroll;
+    overflow-x: auto;
+    overflow: auto;
 }
 
 .queryTemplate {
@@ -59,12 +63,16 @@ body {
 .lineNumber {
     width: 70px;
     text-align: right;
-    float: left;
+    display: inline-block;
     margin-right: 8px;
 }
 
 .line {
-    float: left;
+    display: inline-block;
+}
+
+.matchBox {
+    border: solid 1px #555c70;
 }
 
 .queryButton {

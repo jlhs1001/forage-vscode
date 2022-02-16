@@ -124,7 +124,7 @@ export class FindPanel {
                 <div id="queryContainer">
 
                 </div>
-                <pre>
+                <pre id="resultContainer">
                     <div id="queryResult"></div>
                 </pre>
             </div>

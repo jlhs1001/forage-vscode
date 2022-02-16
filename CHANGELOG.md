@@ -1,10 +1,18 @@
 # Change Log
 
+## [0.0.5] - 2-16-2022
+### Added
+- context windows for search results (v1)
+### Fixed
+- line number issue
+
 ## [0.0.4] - 2-14-2022
 ### Added
 - proper CHANGELOG
 - keyboard shortcut to README
 - line numbers!
+### Changed
+- README to make it slightly more helpful
 
 ## [0.0.3] - 2-14-2022
 ### Fixed
