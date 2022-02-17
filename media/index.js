@@ -1,5 +1,19 @@
 "use strict";
 
+/*
+digit as ([0-9])
+number as (digit+)
+
+mult as '*'
+plus as "+"
+
+expression as (expression) (mult|plus) (expression)
+    
+handle expression {
+
+}
+*/
+
 // global search information
 
 // contains all of the elements necessary for a search bar.
@@ -8,14 +22,7 @@ let queryStarted = false;
 const queryTemplate = document.getElementsByClassName("queryTemplate")[0];
 let source = String.raw``;
 
-String.prototype.insert = function(index, string) {
-    if (index > 0) {
-        return this.substring(0, index) + string + this.substring(index);
-    }
-
-    return string + this;
-};
-
+// escape helper function
 const escapeHtml = (unsafe) => {
     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 };
@@ -34,7 +41,7 @@ const search = {
     resultPanel: document.getElementById("queryResult"),
     queries: document.getElementsByClassName("queries"),
     container: document.getElementById("queryContainer"),
-    results: [],
+    result: "",
     index: 0,
     queryExists: false,
 };
@@ -82,23 +89,6 @@ const setupQuery = (query) => {
         // initialize logic buttons
         query.children[3].children[0].style.backgroundColor = "";
         query.children[3].children[1].style.backgroundColor = "#6a7cb1";
-
-        // or ('|') button
-        template.logic.or.onclick = () => {
-            query.children[3].children[0].style.backgroundColor = "#6a7cb1";
-            query.children[3].children[1].style.backgroundColor = "";
-            logicState.and = false;
-            querySource();
-        };
-
-        // and ('&') button
-        template.logic.and.onclick = () => {
-            query.children[3].children[0].style.backgroundColor = "";
-            query.children[3].children[1].style.backgroundColor = "#6a7cb1";
-            logicState.and = true;
-            querySource();
-        };
-
         
         search.queryExists = true;
     }
@@ -108,71 +98,39 @@ const setupQuery = (query) => {
     search.container.appendChild(newTemplate);
 };
 
-const querySource = () => {
-    if (search.results[0].search.length === 0) {
-        search.resultPanel.innerHTML = escapeHtml(source);
-        return;
-    }
-
-    // kind of hacky, but necessary for the white-space patch.
-
-    let builtQuery = search.results[0].search;
-    for (let i = 1; i < search.results.length; i++) {
-        builtQuery += search.results[i].logic.and
-            ? `(?=${search.results[i].search})`
-            : `|${search.results[i]}`;
+const querySource = (query, source) => {
+    if (query.length === 0) {
+        resultPanel.innerHTML = escapeHtml(source);
+        return false;
     }
 
     let result = [];
-    let lineHasMatch = false;
-    
-    let currentLine = "";
 
-    let htmlEncodedChars = {
-        '&': 4,
-        '<': 3,
-        '>': 3,
-        '"': 5,
-        "'": 5,
-    };
-    let re = new RegExp(builtQuery, 'g');
-    let lines = source.split('\n');
-    lines.forEach((line, index) => {
-        let fmtdLine = escapeHtml(line);
-        let lineHasMatch = false;
-        let updatedIndex = 0;
-        for (let match of [...line.matchAll(re)]) {
-            let htmlEncodedLenSum = 0;
-            for (let char of line.substring(0, match.index)) {
-                console.log(htmlEncodedChars[char]);
-                if (htmlEncodedChars[char]) {
-                    htmlEncodedLenSum += htmlEncodedChars[char];
-                }
-            }
-            fmtdLine = fmtdLine.insert(match.index + (updatedIndex + htmlEncodedLenSum), '<span class="highlight">');
-            updatedIndex += 24;
+    // initialize the regex pattern, then lines from source.
+    const re = new RegExp(query, 'g'),
+        lines = source.split('\n');
 
-            for (let char of match[0]) {
-                if (htmlEncodedChars[char]) {
-                    htmlEncodedLenSum += htmlEncodedChars[char];
-                }
-            }
+    // cached lengths (for... negligible speedups...)
+    let linesLength = lines.length;
+    let formattedLine = "";
 
-            fmtdLine = fmtdLine.insert((match.index + (updatedIndex + htmlEncodedLenSum)) + match[0].length, '</span>');
-            updatedIndex += 7;
-            lineHasMatch = true;
+    let prevMatchIndex = 0;
+
+    // loop over ALL lines
+    for (let i = 0; i < linesLength; i++) {
+        let matches = [...lines[i].matchAll(re)];
+        for (let n = 0; n < matches.length; n++) {
+            let matchIndex = matches[n].index;
+            formattedLine +=
+                escapeHtml(lines[i].substring(prevMatchIndex, matchIndex)) +
+                '<span class="highlight>' +
+                escapeHtml(lines[i].substring(matchIndex, (prevMatchIndex += matchIndex + matches[n][0].length))) +
+                '</span>';
         }
-        if (lineHasMatch) {
-            result.push(`<div class="matchBox">`);
-            for (let i = index - 2; i < index + 2; i++) {
-                if (lines[i]) {
-                    i === index 
-                        ? result.push(`<div class="lineNumber">${index + 1}:</div><div class="line">${fmtdLine}</div>`)
-                        : result.push(`<div class="lineNumber">${i + 1}:</div><div class="line">${lines[i]}</div>`);
-                }
-            }
-            result.push("</div>");
-        }
-    });
-    search.resultPanel.innerHTML = result.join("\n");
+        result.push(formattedLine);
+        formattedLine = "";
+        prevMatchIndex = 0;
+    }
+
+    return result;
 };

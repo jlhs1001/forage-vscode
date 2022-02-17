@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.0.6] - 2-16-2022
+### Removed
+- multiple search bar feature:
+    - new search bar button
+    - remove search bar button
+    - 'and' logic mode
+    - 'or' logic mode
+
 ## [0.0.5] - 2-16-2022
 ### Added
 - context windows for search results (v1)
