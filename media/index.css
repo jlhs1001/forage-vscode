@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: rgb(55, 52, 75);
+    background-color: rgb(11, 24, 11);
 }
 
 #code {
@@ -33,27 +33,42 @@ body {
 }
 
 .searchBarContainer {
-    margin-top: 16px;
-    background-color: rgb(41, 39, 56);
-    width: 80%;
-    padding-right: 8px;
+    background-color: rgb(38, 53, 38);
+    border: solid 1px #597c65;
+    width: 50%;
+    height: 30px;
 }
 
 .searchBar {
-    width: 60%;
-    margin: 3px;
-    border: solid 1px #424757;
-    outline: none;
-    background-color: rgb(41, 39, 56);
-    color: rgb(245, 245, 245);
+    width: 50%;
     height: 30px;
+    background-color: #021c02;
+    border: 0;
+    border-right: solid 1px #597c65;
+    outline: none;
+    color: white;
+    padding: 0;
+    padding-left: 3px;
     font-size: large;
 }
 
-.queries:focus {
-    border: solid 1px #6272a4;
-    background-color: rgb(41, 39, 56);
-    color: rgb(245, 245, 245);
+.searchBarButton {
+    float: right;
+    width: 22px;
+    height: 19px;
+    margin-top: 3px;
+    margin-right: 4px;
+    cursor: pointer;
+    background-color: #233023;
+    border: solid 1px #597c65;
+    color: whitesmoke;
+    text-align: center;
+    padding-top: 3px;
+    user-select: none;
+}
+
+.searchBarButton:hover {
+    background-color: #324432;
 }
 
 .highlight {
