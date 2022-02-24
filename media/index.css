@@ -32,14 +32,14 @@ body {
     overflow: auto;
 }
 
-.queryTemplate {
+.searchBarContainer {
     margin-top: 16px;
     background-color: rgb(41, 39, 56);
     width: 80%;
     padding-right: 8px;
 }
 
-.queries {
+.searchBar {
     width: 60%;
     margin: 3px;
     border: solid 1px #424757;
@@ -73,55 +73,4 @@ body {
 
 .matchBox {
     border: solid 1px #555c70;
-}
-
-.queryButton {
-    float: right;
-    padding: 3px;
-    width: 16px;
-    text-align: center;
-    background-color: #6272a4;
-    cursor: pointer;
-    color: white;
-    margin-top: 8px;
-    margin-left: 5px;
-    border-radius: 2px;
-    -webkit-user-select: none; /* Safari */        
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-}
-
-.queryButton:hover {
-    background-color: #6a7cb1;
-}
-
-.querySelect {
-    float: right;
-    color: white;
-    border: solid 1px #424757;
-    border-radius: 2px;
-    margin-top: 2px;
-    padding-left: 5px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-}
-
-.queryOption {
-    float: right;
-    padding: 3px;
-    width: 16px;
-    text-align: center;
-    cursor: pointer;
-    border: solid 2px #6272a4;
-    margin-right: 5px;
-    border-radius: 2px;
-    -webkit-user-select: none; /* Safari */        
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-}
-
-.queryOption:hover {
-    background-color: rgb(78, 85, 104);
 }
