@@ -9,18 +9,23 @@ const escapeHTML = str => str.replace(/[&<>'"]/g,
         '"': '&quot;',
     }[tag]));
 
-// document.addEventListener("DOMContentLoaded", () => {
-//     const vscode = acquireVsCodeApi();
+document.addEventListener("DOMContentLoaded", () => {
+    const vscode = acquireVsCodeApi();
 
+    const searchBar = document.getElementsByClassName("searchBar")[0];
+    searchBar.oninput = () => {
+        vscode.postMessage({
+            command: "beginSearch",
+        });
+    };
 
-
-//     window.addEventListener("message", (event) => {
-//         switch (event.data.command) {
-//             case 'results':
-//                 console.log(event.data.results);
-//         }
-//     });
-// });
+    window.addEventListener("message", (event) => {
+        switch (event.data.command) {
+            case 'results':
+                console.log(event.data.results);
+        }
+    });
+});
 
 const querySource = (query, source) => {
     if (query.length === 0) {
