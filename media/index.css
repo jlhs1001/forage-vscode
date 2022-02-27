@@ -1,9 +1,23 @@
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .hidden {
     display: none
 }
 
 body {
     background-color: rgb(11, 24, 11);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#content {
+    width: 100%;
+    height: 100%;
 }
 
 #code {
@@ -36,11 +50,20 @@ body {
     background-color: rgb(38, 53, 38);
     border: solid 1px #597c65;
     width: 50%;
+    min-width: max-content;
     height: 30px;
+    float: right;
+}
+
+@media only screen and (max-width: 454px) {
+    .searchBarButton {
+        display: none;
+    }
 }
 
 .searchBar {
-    width: 75%;
+    width: 60%;
+    margin-right: 5px;
     height: 30px;
     background-color: #021c02;
     border: 0;
@@ -53,6 +76,7 @@ body {
 }
 
 .searchBarButton {
+    font-size: large;
     float: right;
     width: 22px;
     height: 19px;
@@ -63,11 +87,20 @@ body {
     border: solid 1px #597c65;
     color: whitesmoke;
     text-align: center;
-    padding-top: 3px;
+    padding-bottom: 3px;
     user-select: none;
+    min-width: 20px;
+    min-height: 20px;
 }
 
-.searchBarButton:hover {
+.buttonImage {
+    max-width: 18px;
+    max-height: 18px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.searchBarButton:hover { 
     background-color: #324432;
 }
 
@@ -88,4 +121,42 @@ body {
 
 .matchBox {
     border: solid 1px #555c70;
+}
+
+.rightSidebar {
+    height: 100%;
+    width: 200px;
+    background-color: rgb(212, 54, 128);
+    float: right;
+    background-color: rgb(38, 53, 38);
+    border-left: solid 1px #597c65;
+    margin-left: -1px;
+    display: block;
+    display: none;
+}
+
+.rightSideMenu {
+    height: 100%;
+    width: max-content;
+    background-color: #233023;
+    border-left: solid 1px #597c65;
+    float: right;
+    margin-right: 1px;
+}
+
+.sideBarOption {
+    transform-origin: 0 0;
+    transform: rotate(270deg);
+    margin-top: 40px;
+    margin-right: -17px;
+    margin-left: -2px;
+    padding: 0;
+    text-align: center;
+    background-color: var(--vs);
+}
+
+.sideBarOption:hover {
+    background-color: #021c02;
+    cursor: pointer;
+    user-select: none;
 }

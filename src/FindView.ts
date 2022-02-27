@@ -1,10 +1,14 @@
 import * as vscode from 'vscode';
+import * as pruner from './Pruner';
+import * as worker from 'worker_threads';
+import path = require('path');
 
 export class FindPanel {
     /**
      * Track the current panel. Only allow a single panel to exist at a time/
      */
     public static currentPanel: FindPanel | undefined;
+    public static currentFileText: string | undefined;
     public static viewType = 'find';
     private static extensionIsActive: boolean = false;
 
@@ -26,8 +30,8 @@ export class FindPanel {
             vscode.ViewColumn.Beside,
             {
                 enableScripts: true,
-                localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
-            }
+                localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')],
+            },
         );
 
         FindPanel.currentPanel = new FindPanel(panel, extensionUri);
@@ -60,9 +64,10 @@ export class FindPanel {
         this._panel.webview.onDidReceiveMessage(
             message => {
                 switch (message.command) {
-                    case 'alert':
-                        vscode.window.showErrorMessage(message.text);
-                        return;
+                    case 'search':
+                        handleSearch(message.query, message.regexp);
+                        console.log(this._panel.iconPath);
+                        break;
                 }
             },
             null,
@@ -87,11 +92,14 @@ export class FindPanel {
     }
 
     private _getHtmlForWebview(webview: vscode.Webview) {
-        const script: vscode.Uri = vscode.Uri.joinPath(this._extensionUri, 'media', 'index.js');
+        const script: vscode.Uri = vscode.Uri.joinPath(this._extensionUri, 'media', 'frontend.js');
         const scriptUri: vscode.Uri = (script).with({ 'scheme': 'vscode-resource' });
 
         const style: vscode.Uri = vscode.Uri.joinPath(this._extensionUri, 'media', 'index.css');
         const styleUri: vscode.Uri = webview.asWebviewUri(style);
+
+        const folder: vscode.Uri = vscode.Uri.joinPath(this._extensionUri, 'media', 'folder.png');
+        const folderUri: vscode.Uri = webview.asWebviewUri(folder);
 
         const nonce = this.getNonce();
         
@@ -110,22 +118,13 @@ export class FindPanel {
         </head>
         <body>
             <div id="content">
-                <div class="hidden">
-                    <div class="queryTemplate">
-                        <input type="text" class="queries">
-                        <div class="queryButton">+</div>
-                        <div class="queryButton">-</div>
-                        <div class="querySelect">
-                            <div class="queryOption">&</div>
-                            <div class="queryOption">|</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="queryContainer">
-
+                <div class="searchBarContainer">
+                    <input class="searchBar" type="text">
+                    <div id="folderButton" class="searchBarButton buttonImage"><img src="${folderUri}"></div>
+                    <div id="invertButton" class="searchBarButton">^</div>
+                    <div id="regexpButton" class="searchBarButton">.*</div>
                 </div>
                 <pre id="resultContainer">
-                    <div id="queryResult"></div>
                 </pre>
             </div>
             <script nonce="${nonce}" src="${scriptUri}"></script>
@@ -146,3 +145,22 @@ export class FindPanel {
         FindPanel.currentPanel?._panel.webview.postMessage(message);
     }
 }
+
+const handleSearch = (query: string, regexpMode: any) => {
+    let result = [];
+    if (!FindPanel.currentFileText) { return; }
+    if (regexpMode) {
+        for (const line of FindPanel.currentFileText?.split('\n')) {
+            result.push(pruner.highlightRegex(query, line));
+        }
+    } else {
+        for (const line of FindPanel.currentFileText?.split('\n')) {
+            result.push(pruner.highlight(pruner.delimSearch(query, line), query, line));
+        }
+    }
+
+    FindPanel.post({
+        command: "result",
+        data: result,
+    });
+};

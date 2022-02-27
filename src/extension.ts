@@ -18,7 +18,9 @@ export function activate(context: vscode.ExtensionContext) {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		FindPanel.createOrShow(context.extensionUri);
-		FindPanel.post({"command": "beginSearch", "source": vscode.window.activeTextEditor?.document.getText()});
+		FindPanel.currentFileText = vscode.window.activeTextEditor?.document.getText();
+		const color = new vscode.ThemeIcon('button.background');
+		console.log(color);
 	});
 	
 	context.subscriptions.push(disposable);

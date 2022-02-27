@@ -26,8 +26,8 @@
 		"keybindings": [
 			{
 				"command": "forage.find",
-				"key": "ctrl+alt+j",
-				"mac": "alt+cmd+j"
+				"key": "ctrl+alt+k",
+				"mac": "alt+cmd+k"
 			}
 		]
 	},
