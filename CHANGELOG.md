@@ -1,5 +1,17 @@
 # Change Log
 
+## [1.0.0] - 2-27-22
+### Fixed
+- search results not properly displaying
+
+## [1.0.0] - 2-27-22
+### Changed
+- UI and general layout
+- search hotkey
+### Added
+- Regex and literal search modes
+- line numbers
+
 ## [0.0.6] - 2-16-2022
 ### Removed
 - multiple search bar feature:
@@ -7,6 +19,9 @@
     - remove search bar button
     - 'and' logic mode
     - 'or' logic mode
+- line numbers
+### Fixed
+- match highlight rendering issue
 
 ## [0.0.5] - 2-16-2022
 ### Added

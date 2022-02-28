@@ -28,28 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
         // track active buttons
         active: [],
     };
-    buttons.buttons = [buttons.folder, buttons.invert, buttons.regexp];
-    for (const button of buttons.buttons) {
-        button.onclick = (ev) => {
-            if (buttons.active.includes(button.id)) {
-                // turn off button
-                button.style.backgroundColor = "#233023";
-                buttons.active.splice(
-                    buttons.active.indexOf(button.id), 1
-                );
-                if (ev.target.id === "regexpButton") {
-                    regexpMode = false;
-                }
-            } else {
-                // turn on button
-                button.style.backgroundColor = "#324432";
-                buttons.active.push(button.id);
-                if (ev.target.id === "regexpButton") {
-                    regexpMode = true;
-                }
-            }
-        };
-    }
+    const regexpButton = document.getElementById("regexpButton");
+    regexpButton.onclick = () => {
+        if (regexpMode) {
+            // turn off button
+            regexpButton.style.backgroundColor = "#233023";
+            regexpMode = false;
+        } else {
+            // turn on button
+            regexpButton.style.backgroundColor = "#324432";
+            regexpMode = true;
+        }
+    };
 
     // temp
     const contextWindowSize = 2;
