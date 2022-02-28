@@ -5,7 +5,7 @@
 	"publisher": "LiamSeewald",
 	"repository": {"url": "https://github.com/jlhs1001/forage.git"},
 	"license": "LICENSE",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"engines": {
 		"vscode": "^1.64.0"
 	},
