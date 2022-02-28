@@ -120,8 +120,6 @@ export class FindPanel {
             <div id="content">
                 <div class="searchBarContainer">
                     <input class="searchBar" type="text">
-                    <div id="folderButton" class="searchBarButton buttonImage"><img src="${folderUri}"></div>
-                    <div id="invertButton" class="searchBarButton">^</div>
                     <div id="regexpButton" class="searchBarButton">.*</div>
                 </div>
                 <pre id="resultContainer">
@@ -149,13 +147,14 @@ export class FindPanel {
 const handleSearch = (query: string, regexpMode: any) => {
     let result = [];
     if (!FindPanel.currentFileText) { return; }
+    let lines: string[] = FindPanel.currentFileText?.split('\n');
     if (regexpMode) {
-        for (const line of FindPanel.currentFileText?.split('\n')) {
-            result.push(pruner.highlightRegex(query, line));
+        for (let i = 0; i < lines.length; i++) {
+            result.push(pruner.highlightRegex(query, String.raw`${lines[i]}`));
         }
     } else {
-        for (const line of FindPanel.currentFileText?.split('\n')) {
-            result.push(pruner.highlight(pruner.delimSearch(query, line), query, line));
+        for (let i = 0; i < lines.length; i++) {
+            result.push(pruner.highlight(pruner.delimSearch(query, String.raw`${lines[i]}`), query, String.raw`${lines[i]}`));
         }
     }
 

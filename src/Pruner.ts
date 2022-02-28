@@ -4,9 +4,19 @@ const escapeHTML = str => str.replace(/[&<>'"]/g,
     tag => ({
         '&': '&amp;',
         '<': '&lt;',
-        '>': '&gt',
-        "'": '&#39',
+        '>': '&gt;',
+        "'": '&#39;',
         '"': '&quot;',
+    }[tag]));
+
+// @ts-ignore
+const tagOffset = str => str.match(/[&<>'"]/g,
+    // @ts-ignore
+    tag => ({
+        '&': 5,
+        '<': 4,
+        '>': 3,
+        "'": 4
     }[tag]));
 
 export const querySource = (query: string, line: string): number[][] => {
@@ -38,13 +48,12 @@ export const highlight = (matches: number[], delimiter: string, line: string) =>
     // If there are no matches, it simply returns the original string.
     let result: string = "";
     let previousMatchEnd: number = 0;
-    delimiter = escapeHTML(delimiter);
     for (let i = 0; i < matches.length; i++) {
         result += escapeHTML(line.substring(previousMatchEnd, matches[i])) +
-        '<span class="highlight">' + delimiter + '</span>';
-        previousMatchEnd = matches[i] + delimiter.length;
+        '<span class="highlight">' + escapeHTML(delimiter) + '</span>';
+        previousMatchEnd = matches[i] + (delimiter.length);
     }
-    return [result + line.substring(previousMatchEnd, line.length), matches.length !== 0];
+    return [result + escapeHTML(line.substring(previousMatchEnd, line.length)), matches.length !== 0];
 };
 
 export const highlightRegex = (query: string, line: string) => {
@@ -52,9 +61,9 @@ export const highlightRegex = (query: string, line: string) => {
     let result: string = "";
     let previousMatchEnd: number = 0;
     for (let i = 0; i < matches.length; i++) {
-        result += line.substring(previousMatchEnd, matches[i][0]) +
-        '<span class="highlight">' + line.substring(matches[i][0], matches[i][0] + matches[i][1]) + '</span>';
+        result += escapeHTML(line.substring(previousMatchEnd, matches[i][0])) +
+        '<span class="highlight">' + escapeHTML(line.substring(matches[i][0], matches[i][0] + matches[i][1])) + '</span>';
         previousMatchEnd = matches[i][0] + matches[i][1];
     }
-    return [result + line.substring(previousMatchEnd, line.length), matches.length !== 0];
+    return [result + escapeHTML(line.substring(previousMatchEnd, line.length)), matches.length !== 0];
 };

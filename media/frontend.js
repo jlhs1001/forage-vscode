@@ -72,14 +72,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         // place lines just before match
                         for (let n = (i - contextWindowSize); n < i; n++) {
                             if (matches[n]) {
-                                contextWindow.innerHTML += matches[n][0];
+                                contextWindow.innerHTML += `<span class="lineNumber">${n + 1}: </span>` + matches[n][0];
                             }
                         }
 
                         // populate context window
                         for (let n = i; n < (i + contextWindowSize); n++) {
                             if (matches[n] && matches[n][1]) {
-                                contextWindow.innerHTML += matches[n][0];
+                                contextWindow.innerHTML += `<span class="lineNumber">${n + 1}: </span>` + matches[n][0];
                                 i = n + 1;
                             }
                         }
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         // place lines just after match.
                         for (let n = i; n < (i + contextWindowSize); n++) {
                             if (matches[n]) {
-                                contextWindow.innerHTML += matches[n][0];
+                                contextWindow.innerHTML += `<span class="lineNumber">${n + 1}: </span>` + matches[n][0];
                             }
                         }
                     }
